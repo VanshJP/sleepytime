@@ -1,17 +1,14 @@
-//
-//  sleepytimeApp.swift
-//  sleepytime
-//
-//  Created by Vansh Patel on 8/23/26.
-//
-
 import SwiftUI
 
 @main
 struct sleepytimeApp: App {
+    @State private var model = AppModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+                .environment(model)
+                .preferredColorScheme(.dark)
         }
     }
 }

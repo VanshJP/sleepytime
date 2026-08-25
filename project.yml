@@ -1,0 +1,63 @@
+name: sleepytime
+options:
+  bundleIdPrefix: com.vansh
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "26.0"
+packages:
+  SleepCore:
+    path: SleepCore
+settings:
+  base:
+    DEVELOPMENT_TEAM: F9MZJ6MU5W
+    SWIFT_VERSION: "6.0"
+    SWIFT_APPROACHABLE_CONCURRENCY: YES
+    SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+targets:
+  sleepytime:
+    type: application
+    platform: iOS
+    sources:
+      - sleepytime
+      - Shared
+    dependencies:
+      - package: SleepCore
+        product: SleepCore
+      - target: sleepytimeWidget
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vansh.sleepytime
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_ENTITLEMENTS: sleepytime/sleepytime.entitlements
+        INFOPLIST_KEY_CFBundleDisplayName: Goodnight
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleDefault
+        INFOPLIST_KEY_NSSupportsLiveActivities: YES
+        INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates: YES
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "Sleepytime reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere."
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Sleepytime does not write data to Apple Health."
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+  sleepytimeWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widget
+      - Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vansh.sleepytime.widget
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Widget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Widget/Widget.entitlements
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+        SWIFT_APPROACHABLE_CONCURRENCY: YES
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor

@@ -6,195 +6,375 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1228E1FFE891E81022D21744 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422FACB9C47BE2CBE7D2B769 /* OnboardingView.swift */; };
+		13CC1CEE7D6AF250F6FA2722 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79405F00045A75E8AA825DF5 /* Assets.xcassets */; };
+		14DF960B07122F2754965751 /* TrendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B059CCFA5D3A346B8BBD608 /* TrendsView.swift */; };
+		18CF8F2CC31C11B3F7ECB5A2 /* TonightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1918EEAD0BD2CB998B19BA /* TonightView.swift */; };
+		23200E2C3E9A3A8C7F79FBFE /* CitationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1176C427F29070E01DFAF20 /* CitationsView.swift */; };
+		2E2E45001E1535237718F90A /* AutomationExportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BACB11697977387F2AAD0 /* AutomationExportSheet.swift */; };
+		40A5E74DBC32E71C82FD3A73 /* SleepCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5322042B8A7A0FD6B6A42B89 /* SleepCore */; };
+		45B5C4C493E0DE56E94F12C6 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD845BE1DA787A7C887811C /* DemoData.swift */; };
+		468935CBEDAAAB0C42C2985D /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A284A337C86121745A1FB4 /* AppModel.swift */; };
+		49CE400B19986B9EAE096F50 /* TonightIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35479B3ED92A14C8FB478679 /* TonightIntents.swift */; };
+		50A303C789C3D9B6BE5FF187 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87D95D3E0611B70015B5063 /* RootView.swift */; };
+		565BFD38A90EBB325674E742 /* TonightActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FE7FD15683BEC24FC1803E /* TonightActivityAttributes.swift */; };
+		585E6238DE7724AD89BC10A7 /* sleepytimeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DF317277DB6D8FAB2B1D4CF /* sleepytimeApp.swift */; };
+		5E95C05FF316E2546D07EAD0 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5C0A1BB1A23E9B041E3E1A /* HealthKitService.swift */; };
+		73DF2EFA18D337F91507D698 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FA29E627D0DC7012E67B64 /* SettingsView.swift */; };
+		8C15E43A41130FCF718E14D0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44038E4ED17D042B93608389 /* PrivacyInfo.xcprivacy */; };
+		A2D8B3EA2597C11B0B3A2A3E /* SharedScheduleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAACB9D161184B2EF3CEFCCA /* SharedScheduleStore.swift */; };
+		A98D3E85A1EC9AB48B790DE1 /* TonightActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FE7FD15683BEC24FC1803E /* TonightActivityAttributes.swift */; };
+		C1E22CC01B97145F124F335A /* sleepytimeWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7D2D165EB72B93E03E20758F /* sleepytimeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C237F6435778066D3AD5A5F4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A428F475EF06D6F8B0BA410 /* Theme.swift */; };
+		CF0F8B1A3174B28D6C70A3C1 /* ThermalCurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1B16AAB6B3B89D68F5A930 /* ThermalCurveView.swift */; };
+		F3042AA224AE49B8752EEC04 /* sleepytimeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D437A20E06C3AC1704CF96F6 /* sleepytimeWidgetBundle.swift */; };
+		F7F1AA4D5FEE6B00BAA87231 /* SharedScheduleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAACB9D161184B2EF3CEFCCA /* SharedScheduleStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F84A1255E98A1830B0D6986A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4576D46104EB6F7159DE0E15 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AC62E2FB876403FAB830D7C;
+			remoteInfo = sleepytimeWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		723D8B6FADAE46EAFB577DE5 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				C1E22CC01B97145F124F335A /* sleepytimeWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		BB9D8B3E303BF48400C4D273 /* sleepytime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sleepytime.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DF317277DB6D8FAB2B1D4CF /* sleepytimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sleepytimeApp.swift; sourceTree = "<group>"; };
+		35479B3ED92A14C8FB478679 /* TonightIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonightIntents.swift; sourceTree = "<group>"; };
+		37D7DFD56BECD93F6AF4642F /* sleepytime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sleepytime.entitlements; sourceTree = "<group>"; };
+		3A428F475EF06D6F8B0BA410 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		3BA9D18ABD6EEEF2CD844C1C /* Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widget.entitlements; sourceTree = "<group>"; };
+		422FACB9C47BE2CBE7D2B769 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		44038E4ED17D042B93608389 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		6B059CCFA5D3A346B8BBD608 /* TrendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendsView.swift; sourceTree = "<group>"; };
+		79405F00045A75E8AA825DF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7D2D165EB72B93E03E20758F /* sleepytimeWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = sleepytimeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D5C0A1BB1A23E9B041E3E1A /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
+		97FA29E627D0DC7012E67B64 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A0A284A337C86121745A1FB4 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		A1176C427F29070E01DFAF20 /* CitationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitationsView.swift; sourceTree = "<group>"; };
+		A3FE7FD15683BEC24FC1803E /* TonightActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonightActivityAttributes.swift; sourceTree = "<group>"; };
+		ABD845BE1DA787A7C887811C /* DemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
+		AD837DD05734A83D4D6B2C4C /* SleepCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = SleepCore; path = SleepCore; sourceTree = SOURCE_ROOT; };
+		B87D95D3E0611B70015B5063 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		BAACB9D161184B2EF3CEFCCA /* SharedScheduleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedScheduleStore.swift; sourceTree = "<group>"; };
+		BD1B16AAB6B3B89D68F5A930 /* ThermalCurveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThermalCurveView.swift; sourceTree = "<group>"; };
+		D437A20E06C3AC1704CF96F6 /* sleepytimeWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sleepytimeWidgetBundle.swift; sourceTree = "<group>"; };
+		D72E811EE361824442664300 /* sleepytime.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = sleepytime.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB1B69EAD0B7BCFD16666EA2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EB3BACB11697977387F2AAD0 /* AutomationExportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomationExportSheet.swift; sourceTree = "<group>"; };
+		EC1918EEAD0BD2CB998B19BA /* TonightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonightView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		BB9D8B40303BF48400C4D273 /* sleepytime */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = sleepytime;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
-		BB9D8B3B303BF48400C4D273 /* Frameworks */ = {
+		EC20ECA4C9DCF618A134CF4A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40A5E74DBC32E71C82FD3A73 /* SleepCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BB9D8B35303BF48400C4D273 = {
+		07509DCEDC0120CF78A17389 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				BB9D8B40303BF48400C4D273 /* sleepytime */,
-				BB9D8B3F303BF48400C4D273 /* Products */,
+				EB3BACB11697977387F2AAD0 /* AutomationExportSheet.swift */,
+				A1176C427F29070E01DFAF20 /* CitationsView.swift */,
+				422FACB9C47BE2CBE7D2B769 /* OnboardingView.swift */,
+				B87D95D3E0611B70015B5063 /* RootView.swift */,
+				97FA29E627D0DC7012E67B64 /* SettingsView.swift */,
+				BD1B16AAB6B3B89D68F5A930 /* ThermalCurveView.swift */,
+				EC1918EEAD0BD2CB998B19BA /* TonightView.swift */,
+				6B059CCFA5D3A346B8BBD608 /* TrendsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		089E9F0973DD0FF4D244980B /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				AD837DD05734A83D4D6B2C4C /* SleepCore */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		4B85AA52A09BB84CE43B31D8 /* sleepytime */ = {
+			isa = PBXGroup;
+			children = (
+				79405F00045A75E8AA825DF5 /* Assets.xcassets */,
+				44038E4ED17D042B93608389 /* PrivacyInfo.xcprivacy */,
+				37D7DFD56BECD93F6AF4642F /* sleepytime.entitlements */,
+				0DF317277DB6D8FAB2B1D4CF /* sleepytimeApp.swift */,
+				B54563B99AF15D3AB42595E6 /* App */,
+				AEA50DF61B19B52FC4112FB7 /* Intents */,
+				FC15775D94A60C898F1F4D6F /* Services */,
+				07509DCEDC0120CF78A17389 /* Views */,
+			);
+			path = sleepytime;
+			sourceTree = "<group>";
+		};
+		81E09CBBC965EE5F68C09FF1 = {
+			isa = PBXGroup;
+			children = (
+				089E9F0973DD0FF4D244980B /* Packages */,
+				B23C7C64DEAEE3CB7ECD9CA2 /* Shared */,
+				4B85AA52A09BB84CE43B31D8 /* sleepytime */,
+				9F46D009D6176D789BCF38CF /* Widget */,
+				C2C8F6044F919CD0639FD602 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		BB9D8B3F303BF48400C4D273 /* Products */ = {
+		9F46D009D6176D789BCF38CF /* Widget */ = {
 			isa = PBXGroup;
 			children = (
-				BB9D8B3E303BF48400C4D273 /* sleepytime.app */,
+				EB1B69EAD0B7BCFD16666EA2 /* Info.plist */,
+				D437A20E06C3AC1704CF96F6 /* sleepytimeWidgetBundle.swift */,
+				3BA9D18ABD6EEEF2CD844C1C /* Widget.entitlements */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		AEA50DF61B19B52FC4112FB7 /* Intents */ = {
+			isa = PBXGroup;
+			children = (
+				35479B3ED92A14C8FB478679 /* TonightIntents.swift */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		B23C7C64DEAEE3CB7ECD9CA2 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				BAACB9D161184B2EF3CEFCCA /* SharedScheduleStore.swift */,
+				A3FE7FD15683BEC24FC1803E /* TonightActivityAttributes.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		B54563B99AF15D3AB42595E6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A0A284A337C86121745A1FB4 /* AppModel.swift */,
+				3A428F475EF06D6F8B0BA410 /* Theme.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C2C8F6044F919CD0639FD602 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D72E811EE361824442664300 /* sleepytime.app */,
+				7D2D165EB72B93E03E20758F /* sleepytimeWidget.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FC15775D94A60C898F1F4D6F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				ABD845BE1DA787A7C887811C /* DemoData.swift */,
+				7D5C0A1BB1A23E9B041E3E1A /* HealthKitService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BB9D8B3D303BF48400C4D273 /* sleepytime */ = {
+		6AC62E2FB876403FAB830D7C /* sleepytimeWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BB9D8B49303BF48500C4D273 /* Build configuration list for PBXNativeTarget "sleepytime" */;
+			buildConfigurationList = 8A06A9ECDB82A3413F4D0874 /* Build configuration list for PBXNativeTarget "sleepytimeWidget" */;
 			buildPhases = (
-				BB9D8B3A303BF48400C4D273 /* Sources */,
-				BB9D8B3B303BF48400C4D273 /* Frameworks */,
-				BB9D8B3C303BF48400C4D273 /* Resources */,
+				A2B47977C88EE0C183049DAD /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				BB9D8B40303BF48400C4D273 /* sleepytime */,
+			name = sleepytimeWidget;
+			packageProductDependencies = (
+			);
+			productName = sleepytimeWidget;
+			productReference = 7D2D165EB72B93E03E20758F /* sleepytimeWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		B10D157A2889FE2FB3CCF7FD /* sleepytime */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2161AB19A10993F13FB9FA3C /* Build configuration list for PBXNativeTarget "sleepytime" */;
+			buildPhases = (
+				F25DF053510764AEA1973F2E /* Sources */,
+				35278C1BCFE7F0C799E670D4 /* Resources */,
+				EC20ECA4C9DCF618A134CF4A /* Frameworks */,
+				723D8B6FADAE46EAFB577DE5 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4241F1441EBB8C51D14B2061 /* PBXTargetDependency */,
 			);
 			name = sleepytime;
 			packageProductDependencies = (
+				5322042B8A7A0FD6B6A42B89 /* SleepCore */,
 			);
 			productName = sleepytime;
-			productReference = BB9D8B3E303BF48400C4D273 /* sleepytime.app */;
+			productReference = D72E811EE361824442664300 /* sleepytime.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		BB9D8B36303BF48400C4D273 /* Project object */ = {
+		4576D46104EB6F7159DE0E15 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2660;
-				LastUpgradeCheck = 2660;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					BB9D8B3D303BF48400C4D273 = {
-						CreatedOnToolsVersion = 26.6;
+					6AC62E2FB876403FAB830D7C = {
+						DevelopmentTeam = F9MZJ6MU5W;
+					};
+					B10D157A2889FE2FB3CCF7FD = {
+						DevelopmentTeam = F9MZJ6MU5W;
 					};
 				};
 			};
-			buildConfigurationList = BB9D8B39303BF48400C4D273 /* Build configuration list for PBXProject "sleepytime" */;
+			buildConfigurationList = 18A353C107AFB934E2092D79 /* Build configuration list for PBXProject "sleepytime" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
-			mainGroup = BB9D8B35303BF48400C4D273;
+			mainGroup = 81E09CBBC965EE5F68C09FF1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4753E124AA52DFB4A06FFB90 /* XCLocalSwiftPackageReference "SleepCore" */,
+			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = BB9D8B3F303BF48400C4D273 /* Products */;
+			productRefGroup = C2C8F6044F919CD0639FD602 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BB9D8B3D303BF48400C4D273 /* sleepytime */,
+				B10D157A2889FE2FB3CCF7FD /* sleepytime */,
+				6AC62E2FB876403FAB830D7C /* sleepytimeWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		BB9D8B3C303BF48400C4D273 /* Resources */ = {
+		35278C1BCFE7F0C799E670D4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13CC1CEE7D6AF250F6FA2722 /* Assets.xcassets in Resources */,
+				8C15E43A41130FCF718E14D0 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BB9D8B3A303BF48400C4D273 /* Sources */ = {
+		A2B47977C88EE0C183049DAD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7F1AA4D5FEE6B00BAA87231 /* SharedScheduleStore.swift in Sources */,
+				A98D3E85A1EC9AB48B790DE1 /* TonightActivityAttributes.swift in Sources */,
+				F3042AA224AE49B8752EEC04 /* sleepytimeWidgetBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F25DF053510764AEA1973F2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				468935CBEDAAAB0C42C2985D /* AppModel.swift in Sources */,
+				2E2E45001E1535237718F90A /* AutomationExportSheet.swift in Sources */,
+				23200E2C3E9A3A8C7F79FBFE /* CitationsView.swift in Sources */,
+				45B5C4C493E0DE56E94F12C6 /* DemoData.swift in Sources */,
+				5E95C05FF316E2546D07EAD0 /* HealthKitService.swift in Sources */,
+				1228E1FFE891E81022D21744 /* OnboardingView.swift in Sources */,
+				50A303C789C3D9B6BE5FF187 /* RootView.swift in Sources */,
+				73DF2EFA18D337F91507D698 /* SettingsView.swift in Sources */,
+				A2D8B3EA2597C11B0B3A2A3E /* SharedScheduleStore.swift in Sources */,
+				C237F6435778066D3AD5A5F4 /* Theme.swift in Sources */,
+				CF0F8B1A3174B28D6C70A3C1 /* ThermalCurveView.swift in Sources */,
+				565BFD38A90EBB325674E742 /* TonightActivityAttributes.swift in Sources */,
+				49CE400B19986B9EAE096F50 /* TonightIntents.swift in Sources */,
+				18CF8F2CC31C11B3F7ECB5A2 /* TonightView.swift in Sources */,
+				14DF960B07122F2754965751 /* TrendsView.swift in Sources */,
+				585E6238DE7724AD89BC10A7 /* sleepytimeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin XCBuildConfiguration section */
-		BB9D8B47303BF48500C4D273 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = F9MZJ6MU5W;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
+/* Begin PBXTargetDependency section */
+		4241F1441EBB8C51D14B2061 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6AC62E2FB876403FAB830D7C /* sleepytimeWidget */;
+			targetProxy = F84A1255E98A1830B0D6986A /* PBXContainerItemProxy */;
 		};
-		BB9D8B48303BF48500C4D273 /* Release */ = {
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02341D36E0005FD04EFE45FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = sleepytime/sleepytime.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Goodnight;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sleepytime reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sleepytime does not write data to Apple Health.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vansh.sleepytime;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		28F00525BBF84D90EB5CEE2E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -225,8 +405,7 @@
 				DEVELOPMENT_TEAM = F9MZJ6MU5W;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -234,123 +413,205 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
-		BB9D8B4A303BF48500C4D273 /* Debug */ = {
+		85A4400A861550C05F72D51A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = F9MZJ6MU5W;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
-				GENERATE_INFOPLIST_FILE = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.5;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.vansh.sleepytime;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SDKROOT = auto;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.5;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
-		BB9D8B4B303BF48500C4D273 /* Release */ = {
+		972AB7B5DE475695EFA60A5C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = sleepytime/sleepytime.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = F9MZJ6MU5W;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				INFOPLIST_KEY_CFBundleDisplayName = Goodnight;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sleepytime reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sleepytime does not write data to Apple Health.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.vansh.sleepytime;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SDKROOT = auto;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C90269FE31703C419A79CB1F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vansh.sleepytime.widget;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.5;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		D871086CDCCE2FB9B2CC1F14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vansh.sleepytime.widget;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BB9D8B39303BF48400C4D273 /* Build configuration list for PBXProject "sleepytime" */ = {
+		18A353C107AFB934E2092D79 /* Build configuration list for PBXProject "sleepytime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BB9D8B47303BF48500C4D273 /* Debug */,
-				BB9D8B48303BF48500C4D273 /* Release */,
+				85A4400A861550C05F72D51A /* Debug */,
+				28F00525BBF84D90EB5CEE2E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
-		BB9D8B49303BF48500C4D273 /* Build configuration list for PBXNativeTarget "sleepytime" */ = {
+		2161AB19A10993F13FB9FA3C /* Build configuration list for PBXNativeTarget "sleepytime" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BB9D8B4A303BF48500C4D273 /* Debug */,
-				BB9D8B4B303BF48500C4D273 /* Release */,
+				972AB7B5DE475695EFA60A5C /* Debug */,
+				02341D36E0005FD04EFE45FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
+		};
+		8A06A9ECDB82A3413F4D0874 /* Build configuration list for PBXNativeTarget "sleepytimeWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D871086CDCCE2FB9B2CC1F14 /* Debug */,
+				C90269FE31703C419A79CB1F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		4753E124AA52DFB4A06FFB90 /* XCLocalSwiftPackageReference "SleepCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SleepCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5322042B8A7A0FD6B6A42B89 /* SleepCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SleepCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = BB9D8B36303BF48400C4D273 /* Project object */;
+	rootObject = 4576D46104EB6F7159DE0E15 /* Project object */;
 }
