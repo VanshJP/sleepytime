@@ -7,7 +7,48 @@ nonisolated struct SharedPhaseInfo: Codable, Sendable, Hashable {
     var end: Date
     var startDisplay: String
     var endDisplay: String
+    var startTempDisplay: String
+    var endTempDisplay: String
     var tint: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, start, end, startDisplay, endDisplay, startTempDisplay, endTempDisplay, tint
+    }
+
+    init(
+        id: String,
+        name: String,
+        start: Date,
+        end: Date,
+        startDisplay: String,
+        endDisplay: String,
+        startTempDisplay: String = "",
+        endTempDisplay: String = "",
+        tint: String
+    ) {
+        self.id = id
+        self.name = name
+        self.start = start
+        self.end = end
+        self.startDisplay = startDisplay
+        self.endDisplay = endDisplay
+        self.startTempDisplay = startTempDisplay
+        self.endTempDisplay = endTempDisplay
+        self.tint = tint
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        name = try c.decode(String.self, forKey: .name)
+        start = try c.decode(Date.self, forKey: .start)
+        end = try c.decode(Date.self, forKey: .end)
+        startDisplay = try c.decode(String.self, forKey: .startDisplay)
+        endDisplay = try c.decode(String.self, forKey: .endDisplay)
+        startTempDisplay = try c.decodeIfPresent(String.self, forKey: .startTempDisplay) ?? ""
+        endTempDisplay = try c.decodeIfPresent(String.self, forKey: .endTempDisplay) ?? ""
+        tint = try c.decode(String.self, forKey: .tint)
+    }
 }
 
 nonisolated struct SharedScheduleSnapshot: Codable, Sendable {

@@ -29,6 +29,18 @@ actor HealthKitService {
         HKHealthStore.isHealthDataAvailable()
     }
 
+    /// True when the user has already been through the Health permission sheet
+    /// (so we can skip onboarding without calling requestAuthorization again).
+    func hasPriorReadRequest() async -> Bool {
+        guard HKHealthStore.isHealthDataAvailable() else { return false }
+        do {
+            let status = try await store.statusForAuthorizationRequest(toShare: [], read: [sleepType])
+            return status == .unnecessary
+        } catch {
+            return false
+        }
+    }
+
     func requestAuthorization() async throws {
         guard HKHealthStore.isHealthDataAvailable() else { throw ServiceError.unavailable }
         try await store.requestAuthorization(toShare: [], read: [sleepType])

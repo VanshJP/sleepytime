@@ -2,6 +2,9 @@ import Foundation
 
 public enum ProfileBuilder {
 
+    /// Sleep efficiency gate for "good night" timing medians (Sleep Optimizer).
+    public static let goodNightSEThreshold = 85.0
+
     public static func profile(
         features: [NightFeatures],
         timelines: [NightTimeline],
@@ -17,6 +20,10 @@ public enum ProfileBuilder {
         let detailed = usable.filter { $0.hasStageDetail }
         let recentDetailed = Array(detailed.suffix(recentWindow))
         let priorDetailed = Array(detailed.dropLast(recentWindow).suffix(baselineWindow))
+
+        // Prefer high-efficiency nights for timing + stage medians when enough exist.
+        let goodNights = selectGoodNights(from: recentDetailed)
+        let timingSource = goodNights.count >= 3 ? goodNights : recentDetailed
 
         let sriValue = Regularity.sri(nights: timelines, calendar: calendar)
 
@@ -39,6 +46,10 @@ public enum ProfileBuilder {
             medianCalendar.timeZone = tz
         }
 
+        let medianDeepMins: Double? = timingSource.isEmpty ? nil : median(timingSource.map(\.deepMinutes))
+        let medianRemMins: Double? = timingSource.isEmpty ? nil : median(timingSource.map(\.remMinutes))
+        let medianAsleep: Double? = timingSource.isEmpty ? nil : median(timingSource.map(\.tstMinutes))
+
         return HistoryProfile(
             recentNights: recentDetailed,
             recentDeep: stageStats(recentDetailed.map { $0.deepPercent }),
@@ -48,15 +59,29 @@ public enum ProfileBuilder {
             recentTST: stageStats(recentDetailed.map { $0.tstMinutes }),
             baselineDeep: baselineStats(priorDetailed.map { $0.deepPercent }, minimumCount: minBaselineNights),
             baselineRem: baselineStats(priorDetailed.map { $0.remPercent }, minimumCount: minBaselineNights),
-            medianOnsetMinuteFromNoon: medianMinuteFromNoon(recentDetailed.map { $0.onset }, calendar: medianCalendar),
-            medianOffsetMinuteFromNoon: medianMinuteFromNoon(recentDetailed.map { $0.offset }, calendar: medianCalendar),
+            medianOnsetMinuteFromNoon: medianMinuteFromNoon(timingSource.map { $0.onset }, calendar: medianCalendar),
+            medianOffsetMinuteFromNoon: medianMinuteFromNoon(timingSource.map { $0.offset }, calendar: medianCalendar),
             sri: sriValue,
             consistencyClass: ConsistencyClass.classify(sri: sriValue),
             recentCyclePeriodMinutes: recentCyclePeriod,
             lastNightTSTMinutes: lastTST,
             dominantTimeZoneID: dominantTZ,
-            timezoneShiftDetected: tzShift
+            timezoneShiftDetected: tzShift,
+            goodNightsUsed: goodNights.count,
+            medianAsleepMinutes: medianAsleep,
+            medianDeepMinutes: medianDeepMins,
+            medianRemMinutes: medianRemMins
         )
+    }
+
+    /// Good nights: SE ≥ 85. If fewer than 3, take the top half by SE (min 3 when possible).
+    static func selectGoodNights(from nights: [NightFeatures]) -> [NightFeatures] {
+        let high = nights.filter { $0.sePercent >= goodNightSEThreshold }
+        if high.count >= 3 { return high }
+        guard nights.count >= 3 else { return high }
+        let ranked = nights.sorted { $0.sePercent > $1.sePercent }
+        let take = max(3, nights.count / 2)
+        return Array(ranked.prefix(take))
     }
 
     static func median(_ values: [Double]) -> Double {

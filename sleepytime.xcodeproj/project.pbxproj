@@ -25,6 +25,7 @@
 		8C15E43A41130FCF718E14D0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 44038E4ED17D042B93608389 /* PrivacyInfo.xcprivacy */; };
 		A2D8B3EA2597C11B0B3A2A3E /* SharedScheduleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAACB9D161184B2EF3CEFCCA /* SharedScheduleStore.swift */; };
 		A98D3E85A1EC9AB48B790DE1 /* TonightActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FE7FD15683BEC24FC1803E /* TonightActivityAttributes.swift */; };
+		AFDAE57C8BD7B0755D4D0638 /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B36B18230453E32E564DA4 /* PrivacyView.swift */; };
 		C1E22CC01B97145F124F335A /* sleepytimeWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7D2D165EB72B93E03E20758F /* sleepytimeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C237F6435778066D3AD5A5F4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A428F475EF06D6F8B0BA410 /* Theme.swift */; };
 		CF0F8B1A3174B28D6C70A3C1 /* ThermalCurveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1B16AAB6B3B89D68F5A930 /* ThermalCurveView.swift */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		0DF317277DB6D8FAB2B1D4CF /* sleepytimeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sleepytimeApp.swift; sourceTree = "<group>"; };
+		14B36B18230453E32E564DA4 /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		35479B3ED92A14C8FB478679 /* TonightIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TonightIntents.swift; sourceTree = "<group>"; };
 		37D7DFD56BECD93F6AF4642F /* sleepytime.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = sleepytime.entitlements; sourceTree = "<group>"; };
 		3A428F475EF06D6F8B0BA410 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				EB3BACB11697977387F2AAD0 /* AutomationExportSheet.swift */,
 				A1176C427F29070E01DFAF20 /* CitationsView.swift */,
 				422FACB9C47BE2CBE7D2B769 /* OnboardingView.swift */,
+				14B36B18230453E32E564DA4 /* PrivacyView.swift */,
 				B87D95D3E0611B70015B5063 /* RootView.swift */,
 				97FA29E627D0DC7012E67B64 /* SettingsView.swift */,
 				BD1B16AAB6B3B89D68F5A930 /* ThermalCurveView.swift */,
@@ -314,6 +317,7 @@
 				45B5C4C493E0DE56E94F12C6 /* DemoData.swift in Sources */,
 				5E95C05FF316E2546D07EAD0 /* HealthKitService.swift in Sources */,
 				1228E1FFE891E81022D21744 /* OnboardingView.swift in Sources */,
+				AFDAE57C8BD7B0755D4D0638 /* PrivacyView.swift in Sources */,
 				50A303C789C3D9B6BE5FF187 /* RootView.swift in Sources */,
 				73DF2EFA18D337F91507D698 /* SettingsView.swift in Sources */,
 				A2D8B3EA2597C11B0B3A2A3E /* SharedScheduleStore.swift in Sources */,
@@ -347,11 +351,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Goodnight;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sleepytime reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sleepytime does not write data to Apple Health.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Goodnight reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Goodnight does not write data to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = processing;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
@@ -501,11 +506,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Goodnight;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Sleepytime reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Sleepytime does not write data to Apple Health.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Goodnight reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Goodnight does not write data to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIBackgroundModes = processing;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;

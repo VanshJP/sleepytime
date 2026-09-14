@@ -34,7 +34,7 @@ final class EngineTests: XCTestCase {
         XCTAssertEqual(plateau.end.timeIntervalSince(plateau.start), (210.0 - 45.0) * 60, accuracy: 1)
 
         let remHold = schedule.phases[3]
-        XCTAssertEqual(remHold.endOffsetC, -0.5, accuracy: 0.001)
+        XCTAssertEqual(remHold.endOffsetC, -3.0 * 0.7, accuracy: 0.001)
         XCTAssertGreaterThan(remHold.startOffsetC, plateau.endOffsetC - 0.001)
 
         let wakeRamp = schedule.phases[4]
@@ -296,7 +296,8 @@ final class EngineTests: XCTestCase {
         let profile = ProfileBuilder.profile(features: baseline + recent, timelines: [], calendar: Fixtures.calendar)
         let raised = ScheduleEngine.generate(profile: profile, settings: ThermalSettings(), anchorDay: anchor, calendar: Fixtures.calendar)
         let remHold = raised.phases.first { $0.id == "remhold" }!
-        XCTAssertEqual(remHold.endOffsetC, 0.0, accuracy: 0.001)
+        // Softened toward neutral: 35% of the Kim 70%-of-cool-depth floor.
+        XCTAssertEqual(remHold.endOffsetC, (-3.0 * 0.7) * 0.35, accuracy: 0.05)
     }
 
     func testHotSleeperDisablesWakeRamp() {
@@ -304,7 +305,7 @@ final class EngineTests: XCTestCase {
         let schedule = ScheduleEngine.generate(profile: .canonical(), settings: settings, anchorDay: anchor, calendar: Fixtures.calendar)
         XCTAssertNil(schedule.phases.first { $0.id == "wakeramp" })
         XCTAssertNotNil(schedule.phases.first { $0.id == "holdtowake" })
-        XCTAssertEqual(schedule.phases.last?.endOffsetC ?? 99, -0.5, accuracy: 0.001)
+        XCTAssertEqual(schedule.phases.last?.endOffsetC ?? 99, -3.0 * 0.7, accuracy: 0.001)
     }
 
     func testDeepCentroidShiftsPlateauEnd() {

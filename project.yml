@@ -37,8 +37,9 @@ targets:
         INFOPLIST_KEY_UIStatusBarStyle: UIStatusBarStyleDefault
         INFOPLIST_KEY_NSSupportsLiveActivities: YES
         INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates: YES
-        INFOPLIST_KEY_NSHealthShareUsageDescription: "Sleepytime reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere."
-        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Sleepytime does not write data to Apple Health."
+        INFOPLIST_KEY_NSHealthShareUsageDescription: "Goodnight reads your sleep stages from Apple Health to build a personalized nightly temperature schedule. All processing happens on your device and nothing is transmitted anywhere."
+        INFOPLIST_KEY_NSHealthUpdateUsageDescription: "Goodnight does not write data to Apple Health."
+        INFOPLIST_KEY_UIBackgroundModes: "processing"
         TARGETED_DEVICE_FAMILY: "1,2"
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
         IPHONEOS_DEPLOYMENT_TARGET: "26.0"

@@ -88,6 +88,10 @@ struct OnboardingView: View {
                 appeared = true
             }
         }
+        .task {
+            // If Health was already authorized on a prior launch, skip the gate.
+            await model.bootstrap()
+        }
     }
 
     private func featureRow(icon: String, tint: Color, title: String, text: String) -> some View {
