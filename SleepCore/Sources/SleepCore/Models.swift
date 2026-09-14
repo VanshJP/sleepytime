@@ -157,6 +157,88 @@ public struct HistoryProfile: Sendable, Hashable, Codable {
     public let lastNightTSTMinutes: Double?
     public let dominantTimeZoneID: String?
     public let timezoneShiftDetected: Bool
+    /// Nights with SE ≥ 85 used for timing medians (good-night filter).
+    public let goodNightsUsed: Int
+    /// Median deep / REM / TST from good nights, for cycle redistribution.
+    public let medianAsleepMinutes: Double?
+    public let medianDeepMinutes: Double?
+    public let medianRemMinutes: Double?
+
+    public init(
+        recentNights: [NightFeatures],
+        recentDeep: StageStats,
+        recentRem: StageStats,
+        recentSE: StageStats,
+        recentSOL: StageStats,
+        recentTST: StageStats,
+        baselineDeep: StageStats,
+        baselineRem: StageStats,
+        medianOnsetMinuteFromNoon: Double?,
+        medianOffsetMinuteFromNoon: Double?,
+        sri: Double?,
+        consistencyClass: ConsistencyClass,
+        recentCyclePeriodMinutes: Double?,
+        lastNightTSTMinutes: Double?,
+        dominantTimeZoneID: String?,
+        timezoneShiftDetected: Bool,
+        goodNightsUsed: Int = 0,
+        medianAsleepMinutes: Double? = nil,
+        medianDeepMinutes: Double? = nil,
+        medianRemMinutes: Double? = nil
+    ) {
+        self.recentNights = recentNights
+        self.recentDeep = recentDeep
+        self.recentRem = recentRem
+        self.recentSE = recentSE
+        self.recentSOL = recentSOL
+        self.recentTST = recentTST
+        self.baselineDeep = baselineDeep
+        self.baselineRem = baselineRem
+        self.medianOnsetMinuteFromNoon = medianOnsetMinuteFromNoon
+        self.medianOffsetMinuteFromNoon = medianOffsetMinuteFromNoon
+        self.sri = sri
+        self.consistencyClass = consistencyClass
+        self.recentCyclePeriodMinutes = recentCyclePeriodMinutes
+        self.lastNightTSTMinutes = lastNightTSTMinutes
+        self.dominantTimeZoneID = dominantTimeZoneID
+        self.timezoneShiftDetected = timezoneShiftDetected
+        self.goodNightsUsed = goodNightsUsed
+        self.medianAsleepMinutes = medianAsleepMinutes
+        self.medianDeepMinutes = medianDeepMinutes
+        self.medianRemMinutes = medianRemMinutes
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case recentNights, recentDeep, recentRem, recentSE, recentSOL, recentTST
+        case baselineDeep, baselineRem, medianOnsetMinuteFromNoon, medianOffsetMinuteFromNoon
+        case sri, consistencyClass, recentCyclePeriodMinutes, lastNightTSTMinutes
+        case dominantTimeZoneID, timezoneShiftDetected
+        case goodNightsUsed, medianAsleepMinutes, medianDeepMinutes, medianRemMinutes
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        recentNights = try c.decodeIfPresent([NightFeatures].self, forKey: .recentNights) ?? []
+        recentDeep = try c.decodeIfPresent(StageStats.self, forKey: .recentDeep) ?? .empty
+        recentRem = try c.decodeIfPresent(StageStats.self, forKey: .recentRem) ?? .empty
+        recentSE = try c.decodeIfPresent(StageStats.self, forKey: .recentSE) ?? .empty
+        recentSOL = try c.decodeIfPresent(StageStats.self, forKey: .recentSOL) ?? .empty
+        recentTST = try c.decodeIfPresent(StageStats.self, forKey: .recentTST) ?? .empty
+        baselineDeep = try c.decodeIfPresent(StageStats.self, forKey: .baselineDeep) ?? .empty
+        baselineRem = try c.decodeIfPresent(StageStats.self, forKey: .baselineRem) ?? .empty
+        medianOnsetMinuteFromNoon = try c.decodeIfPresent(Double.self, forKey: .medianOnsetMinuteFromNoon)
+        medianOffsetMinuteFromNoon = try c.decodeIfPresent(Double.self, forKey: .medianOffsetMinuteFromNoon)
+        sri = try c.decodeIfPresent(Double.self, forKey: .sri)
+        consistencyClass = try c.decodeIfPresent(ConsistencyClass.self, forKey: .consistencyClass) ?? .moderate
+        recentCyclePeriodMinutes = try c.decodeIfPresent(Double.self, forKey: .recentCyclePeriodMinutes)
+        lastNightTSTMinutes = try c.decodeIfPresent(Double.self, forKey: .lastNightTSTMinutes)
+        dominantTimeZoneID = try c.decodeIfPresent(String.self, forKey: .dominantTimeZoneID)
+        timezoneShiftDetected = try c.decodeIfPresent(Bool.self, forKey: .timezoneShiftDetected) ?? false
+        goodNightsUsed = try c.decodeIfPresent(Int.self, forKey: .goodNightsUsed) ?? 0
+        medianAsleepMinutes = try c.decodeIfPresent(Double.self, forKey: .medianAsleepMinutes)
+        medianDeepMinutes = try c.decodeIfPresent(Double.self, forKey: .medianDeepMinutes)
+        medianRemMinutes = try c.decodeIfPresent(Double.self, forKey: .medianRemMinutes)
+    }
 }
 
 public enum ConsistencyClass: String, Sendable, Codable {
@@ -190,7 +272,11 @@ extension HistoryProfile {
             recentCyclePeriodMinutes: nil,
             lastNightTSTMinutes: nil,
             dominantTimeZoneID: nil,
-            timezoneShiftDetected: false
+            timezoneShiftDetected: false,
+            goodNightsUsed: 0,
+            medianAsleepMinutes: nil,
+            medianDeepMinutes: nil,
+            medianRemMinutes: nil
         )
     }
 }

@@ -22,9 +22,14 @@ final class AppModel {
     private static let partnerKey = "sleepytime.thermal.partner.v1"
     private static let savedScheduleKey = "sleepytime.saved.schedule.v1"
     private static let savedPartnerScheduleKey = "sleepytime.saved.partner.v1"
+    private static let featuresKey = "sleepytime.features.v1"
+    private static let profileKey = "sleepytime.profile.v1"
+    private static let reminderIDsKey = "sleepytime.reminder.ids.v1"
 
     private(set) var phase: Phase = .onboarding
     private(set) var isLoading = false
+    /// Soft background refresh — UI stays on cached schedule.
+    private(set) var isRefreshing = false
     private(set) var timelines: [NightTimeline] = []
     private(set) var features: [NightFeatures] = []
     private(set) var profile: HistoryProfile = .canonical()
@@ -32,6 +37,9 @@ final class AppModel {
     private(set) var partnerSchedule: ThermalSchedule?
     private(set) var hasHealthAuthorization = false
     private(set) var learningState = LearningState()
+    private(set) var lastNightAudit: NightThermalAudit?
+    private(set) var setupCompleted = false
+
     private struct ScheduleFallback {
         var schedule: ThermalSchedule?
         var partner: ThermalSchedule?
@@ -45,7 +53,7 @@ final class AppModel {
     var dualZoneEnabled = false
     var useFahrenheit = false
     var demoMode = false
-    var windDownRemindersEnabled = true
+    var windDownRemindersEnabled = false
     var sexSelection: SexSelection = .woman
 
     enum SexSelection: String, CaseIterable, Identifiable {
@@ -66,12 +74,38 @@ final class AppModel {
     let calendar = Calendar.current
     private let service = HealthKitService()
     private var liveActivity: Activity<TonightActivityAttributes>?
+    private var scheduledReminderIDs: [String] = []
 
     init() {
         loadPersisted()
     }
 
     var primaryIsFemale: Bool { sexSelection.isFemale }
+
+    /// Instant open: restore ready state from disk, then refresh HealthKit asynchronously.
+    func bootstrap() async {
+        if setupCompleted || demoMode {
+            phase = .ready
+            if demoMode, features.isEmpty {
+                await refreshFromSource(quiet: false)
+            } else if !demoMode {
+                await refreshQuietly()
+            }
+            ensureLiveActivity()
+            startObservingIfPossible()
+            return
+        }
+
+        if await service.hasPriorReadRequest() {
+            setupCompleted = true
+            hasHealthAuthorization = true
+            persistPrefs()
+            phase = .ready
+            await refreshQuietly()
+            ensureLiveActivity()
+            startObservingIfPossible()
+        }
+    }
 
     func connectAndLoad() async {
         errorText = nil
@@ -81,10 +115,12 @@ final class AppModel {
             try await service.requestAuthorization()
             hasHealthAuthorization = true
             demoMode = false
+            setupCompleted = true
             persistPrefs()
-            await refreshFromSource()
+            await refreshFromSource(quiet: false)
             startObservingIfPossible()
             phase = .ready
+            ensureLiveActivity()
         } catch {
             errorText = error.localizedDescription
         }
@@ -93,23 +129,34 @@ final class AppModel {
     func enterDemoMode() async {
         demoMode = true
         hasHealthAuthorization = false
+        setupCompleted = true
         persistPrefs()
         isLoading = true
         defer { isLoading = false }
-        await refreshFromSource()
+        await refreshFromSource(quiet: false)
         phase = .ready
+        ensureLiveActivity()
     }
 
     func refresh() async {
-        guard !isLoading else { return }
-        isLoading = true
-        defer { isLoading = false }
-        await refreshFromSource()
-        updateLiveActivityIfNeeded()
+        guard !isLoading, !isRefreshing else { return }
+        isRefreshing = true
+        defer { isRefreshing = false }
+        await refreshFromSource(quiet: true)
+        ensureLiveActivity()
+    }
+
+    private func refreshQuietly() async {
+        guard !isRefreshing else { return }
+        isRefreshing = true
+        defer { isRefreshing = false }
+        await refreshFromSource(quiet: true)
+        ensureLiveActivity()
     }
 
     func switchToDemo(_ enabled: Bool) async {
         demoMode = enabled
+        if enabled { setupCompleted = true }
         persistPrefs()
         await refresh()
     }
@@ -122,12 +169,21 @@ final class AppModel {
             try await service.requestAuthorization()
             hasHealthAuthorization = true
             demoMode = false
+            setupCompleted = true
             persistPrefs()
-            await refreshFromSource()
+            await refreshFromSource(quiet: false)
             startObservingIfPossible()
+            ensureLiveActivity()
         } catch {
             errorText = error.localizedDescription
         }
+    }
+
+    func resetOnboarding() {
+        setupCompleted = false
+        demoMode = false
+        phase = .onboarding
+        persistPrefs()
     }
 
     private func startObservingIfPossible() {
@@ -143,16 +199,20 @@ final class AppModel {
         }
     }
 
-    private func refreshFromSource() async {
+    private func refreshFromSource(quiet: Bool) async {
         if demoMode {
             ingest(DemoData.generate(days: 28, calendar: calendar))
             return
         }
         do {
-            let fetched = try await service.fetchRecentSleep(days: 45, calendar: calendar)
+            let fetched = try await service.fetchRecentSleep(days: 60, calendar: calendar)
             ingest(fetched.map { TaggedSegment(sourceID: $0.sourceID, segment: $0.segment, timeZoneIdentifier: $0.timeZoneIdentifier) })
+            hasHealthAuthorization = true
         } catch {
-            errorText = error.localizedDescription
+            if !quiet {
+                errorText = error.localizedDescription
+            }
+            // Keep cached schedule / features on soft refresh failure.
         }
     }
 
@@ -170,7 +230,19 @@ final class AppModel {
             rebuildSchedule()
         }
         updateLearningFromNights()
+        updateLastNightAudit()
+        persistFeaturesAndProfile()
         scheduleWindDownRemindersIfEnabled()
+    }
+
+    private func updateLastNightAudit() {
+        guard let schedule,
+              let lastFeatures = features.filter(\.isUsableNight).sorted(by: { $0.nightKey < $1.nightKey }).last,
+              let timeline = timelines.first(where: { $0.nightKey == lastFeatures.nightKey }) else {
+            lastNightAudit = nil
+            return
+        }
+        lastNightAudit = ThermalCorrelation.audit(night: timeline, features: lastFeatures, schedule: schedule)
     }
 
     func rebuildSchedule() {
@@ -201,6 +273,7 @@ final class AppModel {
         persistSchedules()
         savedFallback = ScheduleFallback(schedule: schedule, partner: partnerSchedule)
         writeSharedSnapshot()
+        updateLastNightAudit()
     }
 
     enum BedSide {
@@ -245,12 +318,19 @@ final class AppModel {
         return String(format: "Adaptive depth %.2f°C · %d trial\(learningState.completedTrials == 1 ? "" : "s")", learningState.candidateC, learningState.completedTrials)
     }
 
+    /// Morning hours + we have a last-night audit → show debrief on Tonight.
+    var shouldShowMorningDebrief: Bool {
+        guard lastNightAudit != nil else { return false }
+        let hour = calendar.component(.hour, from: Date())
+        return hour >= 5 && hour < 14
+    }
+
     func applySettingChange() {
         persistSettings()
         persistPartner()
         persistPrefs()
         rebuildSchedule()
-        updateLiveActivityIfNeeded()
+        ensureLiveActivity()
     }
 
     func effectiveSettings(for side: BedSide = .primary) -> ThermalSettings {
@@ -263,6 +343,15 @@ final class AppModel {
         }
         if let data = try? JSONEncoder().encode(partnerSchedule) {
             UserDefaults.standard.set(data, forKey: Self.savedPartnerScheduleKey)
+        }
+    }
+
+    private func persistFeaturesAndProfile() {
+        if let data = try? JSONEncoder().encode(features) {
+            UserDefaults.standard.set(data, forKey: Self.featuresKey)
+        }
+        if let data = try? JSONEncoder().encode(profile) {
+            UserDefaults.standard.set(data, forKey: Self.profileKey)
         }
     }
 
@@ -304,6 +393,8 @@ final class AppModel {
                 end: phase.end,
                 startDisplay: phase.start.formatted(date: .omitted, time: .shortened),
                 endDisplay: phase.end.formatted(date: .omitted, time: .shortened),
+                startTempDisplay: DeviceMapper.displayString(offsetC: phase.startOffsetC, settings: settings, useFahrenheit: useFahrenheit),
+                endTempDisplay: DeviceMapper.displayString(offsetC: phase.endOffsetC, settings: settings, useFahrenheit: useFahrenheit),
                 tint: phase.id
             )
         }
@@ -330,10 +421,17 @@ final class AppModel {
     }
 
     func scheduleWindDownRemindersIfEnabled() {
-        guard windDownRemindersEnabled, let schedule else { return }
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: pendingReminderIDs())
+        if !scheduledReminderIDs.isEmpty {
+            center.removePendingNotificationRequests(withIdentifiers: scheduledReminderIDs)
+        }
+        guard windDownRemindersEnabled, let schedule else {
+            scheduledReminderIDs = []
+            UserDefaults.standard.removeObject(forKey: Self.reminderIDsKey)
+            return
+        }
         let leadMinutes = 15.0
+        var ids: [String] = []
         for dayOffset in 0..<7 {
             guard let windDown = schedule.phases.first(where: { $0.id == "winddown" }) ?? schedule.phases.first else { continue }
             let fireDate = calendar.date(byAdding: .day, value: dayOffset, to: windDown.start)?.addingTimeInterval(-leadMinutes * 60)
@@ -344,14 +442,35 @@ final class AppModel {
             content.sound = .default
             let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate)
             let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-            let id = "winddown-\(calendar.component(.day, from: fireDate))-\(calendar.component(.month, from: fireDate))"
+            let y = calendar.component(.year, from: fireDate)
+            let m = calendar.component(.month, from: fireDate)
+            let d = calendar.component(.day, from: fireDate)
+            let id = "goodnight.winddown.\(y)-\(m)-\(d)"
+            ids.append(id)
             let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
             center.add(request)
         }
+        scheduledReminderIDs = ids
+        UserDefaults.standard.set(ids, forKey: Self.reminderIDsKey)
     }
 
-    private func pendingReminderIDs() -> [String] {
-        (0..<7).map { "winddown-day\($0)" }
+    func ensureLiveActivity() {
+        guard let schedule, ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+        let now = Date()
+        let windowStart = (schedule.phases.first?.start ?? schedule.lightsOut).addingTimeInterval(-15 * 60)
+        if now >= schedule.wake {
+            endLiveActivity()
+            return
+        }
+        guard now >= windowStart else {
+            endLiveActivity()
+            return
+        }
+        if liveActivity == nil {
+            startLiveActivity()
+        } else {
+            updateLiveActivityIfNeeded()
+        }
     }
 
     func startLiveActivity() {
@@ -421,7 +540,8 @@ final class AppModel {
             "demoMode": demoMode,
             "sexSelection": sexSelection.rawValue,
             "dualZoneEnabled": dualZoneEnabled,
-            "windDownRemindersEnabled": windDownRemindersEnabled
+            "windDownRemindersEnabled": windDownRemindersEnabled,
+            "setupCompleted": setupCompleted
         ]
         UserDefaults.standard.set(dict, forKey: Self.prefsKey)
     }
@@ -443,7 +563,8 @@ final class AppModel {
             useFahrenheit = dict["useFahrenheit"] as? Bool ?? false
             demoMode = dict["demoMode"] as? Bool ?? false
             dualZoneEnabled = dict["dualZoneEnabled"] as? Bool ?? false
-            windDownRemindersEnabled = dict["windDownRemindersEnabled"] as? Bool ?? true
+            windDownRemindersEnabled = dict["windDownRemindersEnabled"] as? Bool ?? false
+            setupCompleted = dict["setupCompleted"] as? Bool ?? false
             if let raw = dict["sexSelection"] as? String {
                 switch raw {
                 case "male", "man": sexSelection = .man
@@ -462,10 +583,28 @@ final class AppModel {
             partnerSchedule = decoded
             savedFallback?.partner = decoded
         }
+        if let data = UserDefaults.standard.data(forKey: Self.featuresKey),
+           let decoded = try? JSONDecoder().decode([NightFeatures].self, from: data) {
+            features = decoded
+        }
+        if let data = UserDefaults.standard.data(forKey: Self.profileKey),
+           let decoded = try? JSONDecoder().decode(HistoryProfile.self, from: data) {
+            profile = decoded
+        }
+        if let ids = UserDefaults.standard.stringArray(forKey: Self.reminderIDsKey) {
+            scheduledReminderIDs = ids
+        }
         if ProcessInfo.processInfo.arguments.contains("-sleepytime-fahrenheit") {
             useFahrenheit = true
         }
-        if demoMode {
+
+        // Instant ready: never re-trap Health users in onboarding.
+        if setupCompleted || demoMode || schedule != nil {
+            if schedule != nil && !setupCompleted && !demoMode {
+                // Legacy installs that have a saved schedule but no setup flag.
+                setupCompleted = true
+                persistPrefs()
+            }
             phase = .ready
         }
     }

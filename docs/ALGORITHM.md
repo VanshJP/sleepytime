@@ -59,10 +59,14 @@ Anchors: lights-out **L** (target bedtime; default median onset −15 min) and w
 | WindDown | [L−90m, L) | neutral **+1.5** | bath analog (Haghayegh 2019); Raymann 2008 +0.4 °C skin |
 | Descent | [L, L+45m) | lerp +1.5 → −coolDepth | MROD ~60 min pre-onset (Campbell & Broughton 1994); first-half heat is the enemy (Okamoto-Mizuno 2012) |
 | CoolPlateau | [L+45m, SWSend) | neutral **−coolDepth** (default 3.0) | Herberger 2024 (+7.5 min N3); Moyen 2024 (+22 % deep men, +25 % REM women) |
-| REMHold | [SWSend, Wt−45m) | drift to neutral **−0.5** | REM poikilothermy (Cerri 2017): stability beats manipulation |
-| WakeRamp | [Wt−45m, Wt] | rise to neutral **+1.0** | adjudicated gentle default; Kräuchi 2004; opt-out |
+| REMHold | [SWSend, Wt−45m) | cool at **−0.7 × coolDepth** | Kim 2025: cool REM ↑ REM% & ↓ latency; not near-neutral folklore |
+| WakeRamp | [Wt−45m, Wt] | rise to neutral **+1.0** | adjudicated gentle default; Kräuchi 2004; Kim 2025 pre-wake warm; opt-out |
 
-`SWSend = L + clamp(1.6 × deepCentroid, 120, 300) min`, default L+210 min when no usable deep data (cycles 1–2 heuristic).
+`SWSend` priority: measured cycle period × 2.2 → deep-centroid × 1.6 → reconstructed ultradian deep window (`0.55^i` cycle weights) → default L+210 min.
+
+### Good-night timing filter
+
+Timing medians prefer nights with sleep efficiency ≥ 85% when ≥ 3 such nights exist (else top half by SE). Stage totals from those nights feed cycle redistribution.
 
 ### Personalization rules (each bounded, order-independent)
 

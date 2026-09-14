@@ -15,8 +15,21 @@ struct TonightView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
+                    if model.isRefreshing {
+                        HStack(spacing: 8) {
+                            ProgressView().controlSize(.mini).tint(NightTheme.frost)
+                            Text("Updating from Apple Health…")
+                                .font(.caption)
+                                .foregroundStyle(.white.opacity(0.45))
+                            Spacer()
+                        }
+                        .padding(.top, 2)
+                    }
                     if model.dualZoneEnabled {
                         sidePicker
+                    }
+                    if model.shouldShowMorningDebrief, let audit = model.lastNightAudit {
+                        morningDebrief(audit)
                     }
                     if let schedule = activeSchedule {
                         heroHeader(schedule)
@@ -41,8 +54,13 @@ struct TonightView: View {
                     Button {
                         Task { await model.refresh() }
                     } label: {
-                        Image(systemName: "arrow.clockwise")
+                        if model.isRefreshing {
+                            ProgressView().controlSize(.small)
+                        } else {
+                            Image(systemName: "arrow.clockwise")
+                        }
                     }
+                    .disabled(model.isRefreshing)
                 }
             }
             .sheet(isPresented: $showExport) {
@@ -90,6 +108,34 @@ struct TonightView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 4)
+    }
+
+    private func morningDebrief(_ audit: NightThermalAudit) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Image(systemName: "sun.horizon.fill")
+                    .foregroundStyle(NightTheme.amber)
+                Text("Morning debrief")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
+                Spacer()
+                if let landed = audit.coolingLandedOnDeep {
+                    Text(landed ? "Aligned" : "Retargeting")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(landed ? NightTheme.mint : NightTheme.amber)
+                }
+            }
+            Text(audit.summary)
+                .font(.footnote)
+                .foregroundStyle(.white.opacity(0.72))
+            if let deep = audit.deepMeanOffsetC, let rem = audit.remMeanOffsetC {
+                Text(String(format: "Deep avg %+.1f°C · REM avg %+.1f°C (commanded offsets)", deep, rem))
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(.white.opacity(0.42))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .glassCard(cornerRadius: 20)
     }
 
     private func consistencyBadge(_ klass: ConsistencyClass) -> some View {
@@ -158,16 +204,38 @@ struct TonightView: View {
 
     @ViewBuilder
     private func confidenceFooter(_ schedule: ThermalSchedule) -> some View {
-        let sriText = schedule.metrics.sri.map { String(format: "SRI %.0f", $0) }
-        let parts = [
-            schedule.metrics.nightsAnalyzed > 0 ? "personalized from \(schedule.metrics.nightsAnalyzed) analyzed nights" : "canonical template",
-            sriText,
-            model.learningSummary
-        ].compactMap { $0 }
-        if !parts.isEmpty {
+        let confidence = schedule.metrics.confidence
+        let label = ScheduleConfidence.label(for: confidence)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(label)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(confidenceColor(confidence))
+                Spacer()
+                Text("\(Int((confidence * 100).rounded()))%")
+                    .font(.caption.monospacedDigit().weight(.bold))
+                    .foregroundStyle(.white.opacity(0.55))
+            }
+            ProgressView(value: confidence)
+                .tint(confidenceColor(confidence))
+            let sriText = schedule.metrics.sri.map { String(format: "SRI %.0f", $0) }
+            let parts = [
+                schedule.metrics.nightsAnalyzed > 0 ? "\(schedule.metrics.nightsAnalyzed) nights" : "canonical template",
+                schedule.metrics.goodNightsUsed > 0 ? "\(schedule.metrics.goodNightsUsed) high-efficiency" : nil,
+                sriText,
+                model.learningSummary
+            ].compactMap { $0 }
             Text(parts.joined(separator: " · "))
                 .font(.caption2)
                 .foregroundStyle(.white.opacity(0.42))
+        }
+    }
+
+    private func confidenceColor(_ score: Double) -> Color {
+        switch score {
+        case 0.75...: return NightTheme.mint
+        case 0.45..<0.75: return NightTheme.frost
+        default: return NightTheme.amber
         }
     }
 

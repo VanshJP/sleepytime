@@ -25,15 +25,18 @@ struct RootView: View {
         }
         .animation(.spring(response: 0.6, dampingFraction: 0.85), value: model.phase)
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .active, !model.demoMode, model.phase == .ready {
-                Task { await model.refresh() }
+            if newPhase == .active, model.phase == .ready {
+                Task {
+                    await model.refresh()
+                    model.ensureLiveActivity()
+                }
             }
         }
         .task {
             if ProcessInfo.processInfo.arguments.contains("-sleepytime-demo"), model.phase == .onboarding {
                 await model.enterDemoMode()
-            } else if model.phase == .ready, model.schedule == nil {
-                await model.refresh()
+            } else {
+                await model.bootstrap()
             }
         }
     }

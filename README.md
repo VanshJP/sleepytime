@@ -19,10 +19,12 @@ No accounts. No servers. No analytics. Health data never leaves the device.
 | Wind-down (T−90 min → lights-out) | neutral **+1.5 °C** | Distal vasodilation drives the core-temp drop that initiates sleep — Kräuchi 2000 *AJP*; warm baths cut sleep latency ~36% — Haghayegh 2019 *Sleep Med Rev* |
 | Core descent (lights-out → +45 min) | lerp +1.5 → −3 °C | Steepest core decline supports cycle-1 sleep — Campbell & Broughton 1994; first-half heat is the most damaging window — Okamoto-Mizuno 2012 |
 | Deep-sleep plateau (→ personal SWS window end) | neutral **−3 °C** (2–4 °C bounded) | Conductive-cooling RCT: +7.5 min N3, HR −2.4 bpm — Herberger 2024 *Sci Rep*; cool early-phase: +22% deep (men), +25% REM (women) — Moyen 2024 *Bioengineering* |
-| REM hold (→ wake −45 min) | drift to neutral **−0.5 °C** | REM is poikilothermic and fragile in both directions; stability beats manipulation — Cerri 2017 *Front Physiol* |
-| Wake ramp (final 45 min, opt-out) | rise to neutral **+1 °C** | Mirrors dawn-light physiology (extrapolated; no direct thermal trial exists); disabled in hot-sleeper mode |
+| REM hold (→ wake −45 min) | stay cool at **−0.7 × cool depth** | Cool REM ↑ REM% & ↓ latency — Kim 2025 *Healthcare*; not near-neutral folklore |
+| Wake ramp (final 45 min, opt-out) | rise to neutral **+1 °C** | Kim 2025 pre-wake warm; mirrors dawn-light physiology; disabled in hot-sleeper mode |
 
-**Personalization:** the plateau's end is anchored to *your* deep-sleep centroid and REM-cycle period (not a fixed 3 AM), magnitude adapts to your rolling 7-night deep/REM shares vs. your own baseline (never single nights, because wearable deep-sleep minutes are noisy night-to-night; Robbins 2024), women's setpoints start ~1 °C warmer (Moyen 2024 medians), and the **Sleep Regularity Index** gates it all: below SRI 65 the architecture is too unstable to personalize, so the canonical template is used and consistency coaching is shown.
+**Personalization:** timing medians prefer high-efficiency nights (SE ≥ 85); the plateau's end is anchored to *your* deep-sleep centroid, REM-cycle period, or reconstructed ultradian deep window (`0.55^i` / `1.55^i` cycle weights from [Sleep Optimizer](https://github.com/VanshJP/sleep-optimizer)); magnitude adapts to your rolling 7-night deep/REM shares vs. your own baseline; women's setpoints start ~1 °C warmer (Moyen 2024); and the **Sleep Regularity Index** gates it all: below SRI 65 the architecture is too unstable to personalize.
+
+**Also new:** schedule confidence meter, morning thermal debrief (stage × commanded temp correlation), gradual ~2.5 °F export steps for manual pads, instant cold-start from cached schedule (Health refreshes in the background).
 
 Full synthesis with all citations and flagged conflicts: [`docs/RESEARCH.md`](docs/RESEARCH.md) · Algorithm spec + pipeline graph: [`docs/ALGORITHM.md`](docs/ALGORITHM.md)
 
@@ -47,15 +49,14 @@ SleepCore/                  SwiftPM package — pure, deterministic engine
     ProfileBuilder.swift    rolling windows, personal baselines, medians
     ScheduleEngine.swift    phase construction + bounded personalization rules
     Export.swift            device mapping + automation text/CSV export
-  Tests/SleepCoreTests/     62 tests: hand-computed fixtures, SRI math, schedule-shape
-                            invariants, rule triggers + bounds, DST, property fuzz
+  Tests/SleepCoreTests/     66+ tests: hand-computed fixtures, SRI math, schedule-shape
+                            invariants, cycle architecture, rule triggers + bounds, DST, property fuzz
 sleepytime/                 SwiftUI app (iOS 26)
   Services/HealthKitService.swift   actor; async descriptors, tz metadata, observer
   Services/DemoData.swift   seeded synthetic nights (demo mode)
-  App/AppModel.swift        @Observable state, persistence, learning, notifications
+  App/AppModel.swift        @Observable state, persisted setup, async Health refresh
   Intents/                  App Intents for Shortcuts/Siri
-  Views/                    Tonight (thermal curve + hero phase card), Trends
-                            (Swift Charts), Settings, automation export, citations
+  Views/                    Tonight (debrief + confidence), Trends, Settings, privacy, export
 Widget/                     WidgetKit extension + Live Activity (Dynamic Island)
 Shared/                     app-group snapshot store + ActivityAttributes
 docs/                       RESEARCH.md · ALGORITHM.md (with mermaid pipeline)

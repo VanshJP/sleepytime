@@ -21,6 +21,9 @@ struct TrendsView: View {
                         emptyCard
                     } else {
                         summaryRow
+                        if let audit = model.lastNightAudit {
+                            thermalAlignmentCard(audit)
+                        }
                         regularityCard
                         architectureChartCard
                     }
@@ -95,6 +98,44 @@ struct TrendsView: View {
         let hours = Int(minutes / 60)
         let mins = Int(minutes.rounded()) % 60
         return "\(hours)h \(mins)m"
+    }
+
+    private func thermalAlignmentCard(_ audit: NightThermalAudit) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("Cooling vs stages", systemImage: "thermometer.variable.and.figure")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+            Text(audit.summary)
+                .font(.footnote)
+                .foregroundStyle(.white.opacity(0.7))
+            HStack(spacing: 16) {
+                if let deep = audit.deepMeanOffsetC {
+                    stageTempChip("Deep", deep, NightTheme.ice)
+                }
+                if let rem = audit.remMeanOffsetC {
+                    stageTempChip("REM", rem, NightTheme.amber)
+                }
+                if let core = audit.coreMeanOffsetC {
+                    stageTempChip("Core", core, NightTheme.lavender)
+                }
+                Spacer()
+            }
+            Text("Compares last night's stages to the temperature the schedule was commanding — all on-device.")
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.4))
+        }
+        .glassCard()
+    }
+
+    private func stageTempChip(_ label: String, _ offset: Double, _ color: Color) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.5))
+            Text(String(format: "%+.1f°C", offset))
+                .font(.callout.monospacedDigit().weight(.bold))
+                .foregroundStyle(color)
+        }
     }
 
     private var regularityCard: some View {

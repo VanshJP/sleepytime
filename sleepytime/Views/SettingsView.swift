@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Environment(AppModel.self) private var model
 
     @State private var showCitations = false
+    @State private var showPrivacy = false
 
     var body: some View {
         NavigationStack {
@@ -28,6 +29,9 @@ struct SettingsView: View {
             .contentMargins(.bottom, 110, for: .scrollContent)
             .sheet(isPresented: $showCitations) {
                 CitationsView()
+            }
+            .sheet(isPresented: $showPrivacy) {
+                PrivacyView()
             }
         }
     }
@@ -167,7 +171,7 @@ struct SettingsView: View {
                         get: { model.settings.neutralC },
                         set: { value in
                             model.settings.neutralC = (value * 2).rounded() / 2
-                            model.rebuildSchedule()
+                            model.applySettingChange()
                         }
                     ),
                     in: 15...32,
@@ -203,7 +207,7 @@ struct SettingsView: View {
                 get: { model.settings.roomSetpointC },
                 set: { value in
                     model.settings.roomSetpointC = value.rounded()
-                    model.rebuildSchedule()
+                    model.applySettingChange()
                 }
             ), in: 16...26, step: 1)
             .tint(NightTheme.frost)
@@ -225,7 +229,7 @@ struct SettingsView: View {
                 get: { model.settings.thermalBias },
                 set: { value in
                     model.settings.thermalBias = (value * 4).rounded() / 4
-                    model.rebuildSchedule()
+                    model.applySettingChange()
                 }
             ), in: -1...1, step: 0.25)
             .tint(NightTheme.amber)
@@ -288,6 +292,20 @@ struct SettingsView: View {
             }
             .tint(NightTheme.ember)
 
+            Toggle(isOn: Binding(
+                get: { model.settings.gradualTransitions },
+                set: { enabled in
+                    model.settings.gradualTransitions = enabled
+                    model.applySettingChange()
+                }
+            )) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Gradual setpoints").font(.subheadline).foregroundStyle(.white)
+                    Text("Export ~2.5°F steps for manual pad controllers instead of big jumps").font(.caption).foregroundStyle(.white.opacity(0.5))
+                }
+            }
+            .tint(NightTheme.ice)
+
             Picker("Biological sex prior", selection: Binding(
                 get: { model.sexSelection },
                 set: { sel in
@@ -343,7 +361,7 @@ struct SettingsView: View {
                     get: { model.partnerSettings.neutralC },
                     set: { value in
                         model.partnerSettings.neutralC = (value * 2).rounded() / 2
-                        model.rebuildSchedule()
+                        model.applySettingChange()
                     }
                 ), in: 15...32, step: 0.5)
                 .tint(NightTheme.frost)
@@ -422,7 +440,18 @@ struct SettingsView: View {
                     .foregroundStyle(NightTheme.frost)
             }
             .buttonStyle(.glass)
+            Button {
+                showPrivacy = true
+            } label: {
+                Label("Privacy", systemImage: "lock.shield")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(NightTheme.frost)
+            }
+            .buttonStyle(.glass)
             Text("Not medical advice. Temperature effects in trials are real but modest (~10–15 min stage shifts). If you suspect a sleep disorder, talk to a clinician.")
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.4))
+            Text("No accounts. No servers. No tracking. Sleep stages never leave this device.")
                 .font(.caption2)
                 .foregroundStyle(.white.opacity(0.4))
         }

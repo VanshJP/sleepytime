@@ -43,6 +43,8 @@ public struct ThermalSettings: Sendable, Hashable, Codable {
     public var hotSleeperMode: Bool
     public var isBiologicalSexFemale: Bool?
     public var adaptiveCoolDepthC: Double?
+    /// When true, export/automation setpoints step ~1.4 °C (~2.5 °F) for manual pad controllers.
+    public var gradualTransitions: Bool
 
     public init(
         device: DeviceKind = .eightSleep,
@@ -52,7 +54,8 @@ public struct ThermalSettings: Sendable, Hashable, Codable {
         wakeWarmthEnabled: Bool = true,
         hotSleeperMode: Bool = false,
         isBiologicalSexFemale: Bool? = nil,
-        adaptiveCoolDepthC: Double? = nil
+        adaptiveCoolDepthC: Double? = nil,
+        gradualTransitions: Bool = false
     ) {
         self.device = device
         self.neutralC = neutralC
@@ -62,6 +65,26 @@ public struct ThermalSettings: Sendable, Hashable, Codable {
         self.hotSleeperMode = hotSleeperMode
         self.isBiologicalSexFemale = isBiologicalSexFemale
         self.adaptiveCoolDepthC = adaptiveCoolDepthC
+        self.gradualTransitions = gradualTransitions
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case device, neutralC, roomSetpointC, thermalBias, wakeWarmthEnabled
+        case hotSleeperMode, isBiologicalSexFemale, adaptiveCoolDepthC, gradualTransitions
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        device = try c.decodeIfPresent(DeviceKind.self, forKey: .device) ?? .eightSleep
+        neutralC = try c.decodeIfPresent(Double.self, forKey: .neutralC) ?? 26
+        roomSetpointC = try c.decodeIfPresent(Double.self, forKey: .roomSetpointC) ?? 20
+        thermalBias = try c.decodeIfPresent(Double.self, forKey: .thermalBias) ?? 0
+        wakeWarmthEnabled = try c.decodeIfPresent(Bool.self, forKey: .wakeWarmthEnabled) ?? true
+        hotSleeperMode = try c.decodeIfPresent(Bool.self, forKey: .hotSleeperMode) ?? false
+        isBiologicalSexFemale = try c.decodeIfPresent(Bool.self, forKey: .isBiologicalSexFemale)
+        adaptiveCoolDepthC = try c.decodeIfPresent(Double.self, forKey: .adaptiveCoolDepthC)
+        gradualTransitions = try c.decodeIfPresent(Bool.self, forKey: .gradualTransitions) ?? false
+        thermalBias = max(-1, min(1, thermalBias))
     }
 }
 
@@ -102,6 +125,59 @@ public struct MetricsSnapshot: Sendable, Hashable, Codable {
     public let recentTSTHours: Double?
     public let deepCentroidMinutesUsed: Double?
     public let nightsAnalyzed: Int
+    public let confidence: Double
+    public let goodNightsUsed: Int
+    public let remFloorFraction: Double
+
+    public init(
+        sri: Double?,
+        consistencyClass: ConsistencyClass,
+        recentDeepPercent: Double?,
+        recentRemPercent: Double?,
+        recentSEPercent: Double?,
+        recentSOLMinutes: Double?,
+        recentTSTHours: Double?,
+        deepCentroidMinutesUsed: Double?,
+        nightsAnalyzed: Int,
+        confidence: Double = 0.2,
+        goodNightsUsed: Int = 0,
+        remFloorFraction: Double = 0.7
+    ) {
+        self.sri = sri
+        self.consistencyClass = consistencyClass
+        self.recentDeepPercent = recentDeepPercent
+        self.recentRemPercent = recentRemPercent
+        self.recentSEPercent = recentSEPercent
+        self.recentSOLMinutes = recentSOLMinutes
+        self.recentTSTHours = recentTSTHours
+        self.deepCentroidMinutesUsed = deepCentroidMinutesUsed
+        self.nightsAnalyzed = nightsAnalyzed
+        self.confidence = confidence
+        self.goodNightsUsed = goodNightsUsed
+        self.remFloorFraction = remFloorFraction
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case sri, consistencyClass, recentDeepPercent, recentRemPercent, recentSEPercent
+        case recentSOLMinutes, recentTSTHours, deepCentroidMinutesUsed, nightsAnalyzed
+        case confidence, goodNightsUsed, remFloorFraction
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        sri = try c.decodeIfPresent(Double.self, forKey: .sri)
+        consistencyClass = try c.decodeIfPresent(ConsistencyClass.self, forKey: .consistencyClass) ?? .moderate
+        recentDeepPercent = try c.decodeIfPresent(Double.self, forKey: .recentDeepPercent)
+        recentRemPercent = try c.decodeIfPresent(Double.self, forKey: .recentRemPercent)
+        recentSEPercent = try c.decodeIfPresent(Double.self, forKey: .recentSEPercent)
+        recentSOLMinutes = try c.decodeIfPresent(Double.self, forKey: .recentSOLMinutes)
+        recentTSTHours = try c.decodeIfPresent(Double.self, forKey: .recentTSTHours)
+        deepCentroidMinutesUsed = try c.decodeIfPresent(Double.self, forKey: .deepCentroidMinutesUsed)
+        nightsAnalyzed = try c.decodeIfPresent(Int.self, forKey: .nightsAnalyzed) ?? 0
+        confidence = try c.decodeIfPresent(Double.self, forKey: .confidence) ?? 0.2
+        goodNightsUsed = try c.decodeIfPresent(Int.self, forKey: .goodNightsUsed) ?? 0
+        remFloorFraction = try c.decodeIfPresent(Double.self, forKey: .remFloorFraction) ?? 0.7
+    }
 }
 
 public struct ThermalSchedule: Sendable, Hashable, Codable {
@@ -128,7 +204,8 @@ public enum ScheduleEngine {
     public static let minCoolDepthC = 2.0
     public static let maxCoolDepthC = 4.0
     public static let windDownWarmthC = 1.5
-    public static let remFloorC = -0.5
+    /// Kim 2025: stay cool through REM at ~70% of the deep drop — not near-neutral.
+    public static let remFloorFraction = 0.7
     public static let wakeRampTopC = 1.0
     public static let biasScaleC = 1.5
 
@@ -147,7 +224,11 @@ public enum ScheduleEngine {
             lightsOut = roundTo5(targetLightsOut)
         } else if let minute = profile.medianOnsetMinuteFromNoon {
             lightsOut = roundTo5(ProfileBuilder.date(fromNoonMinute: max(0, minute - 15), on: anchorDay, calendar: calendar))
-            notes.append("Bedtime anchored to your median sleep onset over recent nights.")
+            if profile.goodNightsUsed >= 3 {
+                notes.append("Bedtime anchored to your median onset across \(profile.goodNightsUsed) high-efficiency nights.")
+            } else {
+                notes.append("Bedtime anchored to your median sleep onset over recent nights.")
+            }
         } else {
             lightsOut = roundTo5(ProfileBuilder.date(fromNoonMinute: 645, on: anchorDay, calendar: calendar))
             notes.append("No sleep history yet, so using a canonical 10:45 PM bedtime. Schedule will personalize as data arrives.")
@@ -171,7 +252,7 @@ public enum ScheduleEngine {
         var plateauExtraMinutes = 0.0
         var windDownMinutes = 90.0
         var rampMinutes = 45.0
-        var remFloor = Self.remFloorC
+        var softenRemFloor = false
         let warmWindDown = Self.windDownWarmthC + (femalePrior ? 0.5 : 0)
         var centroidMinutes: Double? = profile.recentNights.compactMap(\.deepCentroidMinutes).median
 
@@ -211,8 +292,8 @@ public enum ScheduleEngine {
             if let baseline = nonEmptyBaseline(profile.baselineRem),
                profile.recentRem.count >= 3,
                profile.recentRem.mean < baseline.mean - 0.5 * baseline.sd {
-                remFloor = 0
-                notes.append("REM share below your usual, so the late-night hold sits at neutral instead of slightly cool to protect REM, which cannot thermoregulate.")
+                softenRemFloor = true
+                notes.append("REM share below your usual, so late-night cooling eases toward neutral to protect REM, which cannot thermoregulate.")
             }
         }
 
@@ -238,12 +319,30 @@ public enum ScheduleEngine {
                 : "Cooler-biased by your preference.")
         }
 
+        // Kim 2025: stay cool through REM at ~70% of peak cool depth (not near-neutral).
+        var remFloor = -coolDepth * Self.remFloorFraction
+        if softenRemFloor {
+            remFloor = min(0, remFloor * 0.35)
+        } else {
+            notes.append("REM hold stays cool (~\(Int(Self.remFloorFraction * 100))% of peak cool depth) — controlled data favor cool beds through REM, not warming.")
+        }
+
+        let cycles: [SleepCycle] = {
+            guard let asleep = profile.medianAsleepMinutes ?? (profile.recentTST.count > 0 ? profile.recentTST.mean : nil),
+                  let deep = profile.medianDeepMinutes,
+                  let rem = profile.medianRemMinutes else { return [] }
+            return CycleArchitecture.build(asleepMinutes: asleep, deepMinutes: deep, remMinutes: rem)
+        }()
+
         let swsEnd: Date = {
             let minutes: Double
             if let period = profile.recentCyclePeriodMinutes, period >= 70, period <= 120 {
                 minutes = min(300, max(120, period * 2.2)) + plateauExtraMinutes
             } else if let centroid = centroidMinutes, centroid > 30 {
                 minutes = min(300, max(120, centroid * 1.6)) + plateauExtraMinutes
+            } else if let cycleEnd = CycleArchitecture.deepWindowEndMinutes(cycles: cycles) {
+                minutes = min(300, max(120, cycleEnd)) + plateauExtraMinutes
+                notes.append("Deep plateau ends with your reconstructed ultradian deep window (\(Int(cycleEnd)) min after lights-out).")
             } else {
                 minutes = 210 + plateauExtraMinutes
             }
@@ -322,9 +421,9 @@ public enum ScheduleEngine {
         if remHoldExists {
             phases.append(ThermalPhase(
                 id: "remhold",
-                name: "REM Hold",
-                rationale: "REM cannot thermoregulate and is fragile to both cold and heat, so the back half of the night holds near-neutral and stable.",
-                evidence: "Cerri 2017 Front Physiol · Okamoto-Mizuno 2012",
+                name: "REM Cool Hold",
+                rationale: "REM cannot thermoregulate well, so the bed stays cool — about 70% of the deep-night drop — rather than warming. A 2025 PSG crossover found more REM and faster REM onset when the bed stayed cool through REM.",
+                evidence: "Kim 2025 Healthcare · Cerri 2017 Front Physiol",
                 start: clampedSwsEnd,
                 end: remHoldEnd,
                 startOffsetC: plateauTemp,
@@ -337,7 +436,7 @@ public enum ScheduleEngine {
                 id: "wakeramp",
                 name: "Wake Ramp",
                 rationale: "A gentle final warmth rides the natural morning rise in body temperature to soften waking, extrapolated from dawn-simulation physiology.",
-                evidence: "Kräuchi 2004 J Sleep Res · van de Werken 2010 J Sleep Res",
+                evidence: "Kräuchi 2004 J Sleep Res · Kim 2025 Healthcare (pre-wake warm)",
                 start: remHoldEnd,
                 end: resolvedWake,
                 startOffsetC: remFloor + biasShift,
@@ -356,6 +455,8 @@ public enum ScheduleEngine {
             ))
         }
 
+        let confidence = ScheduleConfidence.score(profile: profile, goodNightsUsed: profile.goodNightsUsed)
+
         let metrics = MetricsSnapshot(
             sri: profile.sri,
             consistencyClass: profile.consistencyClass,
@@ -365,10 +466,18 @@ public enum ScheduleEngine {
             recentSOLMinutes: profile.recentSOL.count > 0 ? profile.recentSOL.mean : nil,
             recentTSTHours: profile.recentTST.count > 0 ? profile.recentTST.mean / 60 : nil,
             deepCentroidMinutesUsed: centroidMinutes,
-            nightsAnalyzed: profile.recentNights.count
+            nightsAnalyzed: profile.recentNights.count,
+            confidence: confidence,
+            goodNightsUsed: profile.goodNightsUsed,
+            remFloorFraction: Self.remFloorFraction
         )
 
-        let setpoints = sampleSetpoints(phases: phases, from: windDownStart, to: resolvedWake)
+        let setpoints = sampleSetpoints(
+            phases: phases,
+            from: windDownStart,
+            to: resolvedWake,
+            gradual: settings.gradualTransitions
+        )
 
         return ThermalSchedule(
             lightsOut: lightsOut,
@@ -384,7 +493,15 @@ public enum ScheduleEngine {
         stats.count > 0 ? stats : nil
     }
 
-    static func sampleSetpoints(phases: [ThermalPhase], from start: Date, to end: Date) -> [ThermalSetpoint] {
+    static func sampleSetpoints(
+        phases: [ThermalPhase],
+        from start: Date,
+        to end: Date,
+        gradual: Bool = false
+    ) -> [ThermalSetpoint] {
+        if gradual {
+            return gradualSetpoints(phases: phases, from: start, to: end)
+        }
         var times: Set<TimeInterval> = []
         let gridSeconds = 30.0 * 60
         var cursor = start.timeIntervalSince1970
@@ -405,6 +522,53 @@ public enum ScheduleEngine {
             let date = Date(timeIntervalSince1970: tick)
             return ThermalSetpoint(date: date, offsetC: offsetIn(phases: phases, at: date))
         }
+    }
+
+    /// ~1.4 °C (~2.5 °F) steps for manual ChiliPad-style controllers.
+    static func gradualSetpoints(phases: [ThermalPhase], from start: Date, to end: Date) -> [ThermalSetpoint] {
+        let stepC = 1.4
+        var points: [ThermalSetpoint] = []
+        var previousOffset: Double?
+        for phase in phases {
+            let startOff = phase.startOffsetC
+            let endOff = phase.endOffsetC
+            if previousOffset == nil || abs((previousOffset ?? 0) - startOff) > 0.05 {
+                points.append(ThermalSetpoint(date: phase.start, offsetC: startOff))
+                previousOffset = startOff
+            }
+            let delta = endOff - startOff
+            let steps = max(1, Int((abs(delta) / stepC).rounded()))
+            if steps > 1, phase.end > phase.start {
+                let duration = phase.end.timeIntervalSince(phase.start)
+                for i in 1...steps {
+                    let t = Double(i) / Double(steps)
+                    let date = phase.start.addingTimeInterval(duration * t)
+                    let offset = startOff + delta * t
+                    if abs(offset - (previousOffset ?? offset)) >= stepC * 0.45 || i == steps {
+                        points.append(ThermalSetpoint(date: date, offsetC: offset))
+                        previousOffset = offset
+                    }
+                }
+            } else if abs(endOff - startOff) > 0.05 {
+                points.append(ThermalSetpoint(date: phase.end, offsetC: endOff))
+                previousOffset = endOff
+            }
+        }
+        if points.last?.date != end {
+            points.append(ThermalSetpoint(date: end, offsetC: offsetIn(phases: phases, at: end)))
+        }
+        // Deduplicate near-identical consecutive times
+        var deduped: [ThermalSetpoint] = []
+        for point in points {
+            if let last = deduped.last,
+               abs(last.date.timeIntervalSince(point.date)) < 30,
+               abs(last.offsetC - point.offsetC) < 0.05 {
+                continue
+            }
+            deduped.append(point)
+        }
+        _ = start
+        return deduped
     }
 
     static func offsetIn(phases: [ThermalPhase], at date: Date) -> Double {

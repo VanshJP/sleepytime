@@ -4,6 +4,7 @@ struct AutomationExportSheet: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     @State private var copied = false
+    @State private var side: AppModel.BedSide = .primary
 
     var body: some View {
         NavigationStack {
@@ -13,7 +14,15 @@ struct AutomationExportSheet: View {
                         .font(.footnote)
                         .foregroundStyle(.white.opacity(0.65))
 
-                    Text(model.automationText(for: .primary))
+                    if model.dualZoneEnabled {
+                        Picker("Side", selection: $side) {
+                            Text("Side A").tag(AppModel.BedSide.primary)
+                            Text("Side B").tag(AppModel.BedSide.partner)
+                        }
+                        .pickerStyle(.segmented)
+                    }
+
+                    Text(model.automationText(for: side))
                         .font(.system(.caption, design: .monospaced))
                         .foregroundStyle(.white.opacity(0.88))
                         .textSelection(.enabled)
@@ -22,7 +31,7 @@ struct AutomationExportSheet: View {
                         .background(RoundedRectangle(cornerRadius: 14).fill(.black.opacity(0.35)))
 
                     Button {
-                        model.copyAutomation()
+                        model.copyAutomation(for: side)
                         copied = true
                     } label: {
                         Label(copied ? "Copied" : "Copy to clipboard", systemImage: copied ? "checkmark.circle.fill" : "doc.on.doc")

@@ -12,7 +12,7 @@ final class ExportTests: XCTestCase {
         XCTAssertTrue(text.contains("GOODNIGHT"))
         XCTAssertTrue(text.contains("Wind-Down Warmth"))
         XCTAssertTrue(text.contains("Deep-Sleep Plateau"))
-        XCTAssertTrue(text.contains("REM Hold"))
+        XCTAssertTrue(text.contains("REM Cool Hold"))
         XCTAssertTrue(text.contains("Set Eight Sleep to 23.0°C"))
         XCTAssertTrue(text.contains("10:45 PM"))
         XCTAssertTrue(text.contains("Not medical advice"))
